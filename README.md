@@ -5,4 +5,6 @@ https://mirrors.tuna.tsinghua.edu.cn/github-release/git-for-windows/git/Git%20fo
 
 https://github.com/niXman/mingw-builds-binaries/releases
 
+https://steampp.net/
+
 有用的
