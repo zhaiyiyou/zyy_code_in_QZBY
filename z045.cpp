@@ -41,15 +41,15 @@ int main()
         for (int j = 0; j <= n; j++)
         {
             dp[i][j] = dp[i - 1][j];
-            dp[i][j] = min(dp[i][j], dp[i - 1][j - group[i][0].v] + group[i][0].v * group[i][0].p);
+            dp[i][j] = max(dp[i][j], dp[i - 1][j - group[i][0].v] + group[i][0].v * group[i][0].p);
             if (group[i].size() == 2)
             {
-                dp[i][j] = min(dp[i][j], dp[i - 1][j - group[i][0].v - group[i][1].v] + group[i][0].v * group[i][0].p + group[i][1].v * group[i][1].p);
+                dp[i][j] = max(dp[i][j], dp[i - 1][j - group[i][0].v - group[i][1].v] + group[i][0].v * group[i][0].p + group[i][1].v * group[i][1].p);
             }
             if (group[i].size() == 3)
             {
-                dp[i][j] = min(dp[i][j], dp[i - 1][j - group[i][0].v - group[i][2].v] + group[i][0].v * group[i][0].p + group[i][2].v * group[i][0].p);
-                dp[i][j] = min(dp[i][j], dp[i - 1][j - group[i][0].v - group[i][1].v - group[i][2].v] + group[i][0].v * group[i][0].p + group[i][1].v * group[i][1].p + group[i][2].v * group[i][2].p);
+                dp[i][j] = max(dp[i][j], dp[i - 1][j - group[i][0].v - group[i][2].v] + group[i][0].v * group[i][0].p + group[i][2].v * group[i][0].p);
+                dp[i][j] = max(dp[i][j], dp[i - 1][j - group[i][0].v - group[i][1].v - group[i][2].v] + group[i][0].v * group[i][0].p + group[i][1].v * group[i][1].p + group[i][2].v * group[i][2].p);
             }
         }
     }
