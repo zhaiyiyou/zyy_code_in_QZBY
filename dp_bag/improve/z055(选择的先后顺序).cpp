@@ -2,7 +2,7 @@
 #include <algorithm>
 using namespace std;
 
-const int MAXN = 5005;
+const int MAXN = 5005, inf = 1e9;
 int n, m;
 int dp[MAXN][MAXN];
 
@@ -32,13 +32,14 @@ int main()
     {
         cin >> a[i].c;
     }
+    dp[0][m] = 0;
     sort(a + 1, a + n + 1, cmp);
     for (int i = 1; i <= n; i++)
     {
         for (int j = 1; j <= m; j++)
         {
             dp[i][j] = dp[i - 1][j];
-            if (j > a[i].d)
+            if (j >= a[i].d)
             {
                 dp[i][j] = max(dp[i][j], dp[i - 1][j - a[i].d + a[i].c] + 1);
             }
