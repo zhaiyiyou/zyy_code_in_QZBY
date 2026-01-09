@@ -46,21 +46,25 @@ int main()
         }
         if (p == 2)
         {
-            if (find(x) == find(y))
+            if (x == y || find(x) == find(y) || find(x) == find(y + 2 * n))
             {
                 cnt++;
                 continue;
             }
             merg(x, y + n);
-            merg(y,x + n);
-            merg(y,x + 2 * n);
+            merg(x + n, y + 2 * n);
+            merg(x + 2 * n, y);
         }
         else
         {
+            if (find(x) == find(y + n) || find(x) == find(y + 2 * n))
+            {
+                cnt++;
+                continue;
+            }
             merg(x, y);
             merg(x + n,y + n);
             merg(x + 2 * n,y + 2 * n);
-            
         }
     }
     cout << cnt << endl;
