@@ -28,7 +28,7 @@ void top_sort()
                 pq.push(to);
         }
     }
-    for (size_t i = 0; i < res.size(); i++)
+    for (int i = 0; i < res.size(); i++)
     {
         if (i)
             cout << " ";
