@@ -1,10 +1,20 @@
 #include <iostream>
 #include <algorithm>
+#include <vector>
 using namespace std;
 
+struct Item {
+    int a, b;
+};
+
 int m, n;
-int a[505], b[505];
-int dp1[505][505], dp2[505][505][505];
+vector<Item> items(505);
+int dp1[505], dp2[505][505];
+
+bool cmp(const Item &x, const Item &y)
+{
+    return x.b < y.b;
+}
 
 int main()
 {
@@ -14,8 +24,10 @@ int main()
     cin >> m >> n;
     for (int i = 1; i <= n; i++)
     {
-        cin >> a[i] >> b[i];
+        cin >> items[i].a >> items[i].b;
     }
+
+    sort(items.begin() + 1, items.begin() + n + 1, cmp);
 
     if (m == 1)
     {
@@ -23,14 +35,10 @@ int main()
         int ans = 0;
         for (int i = 1; i <= n; i++)
         {
-            for (int j = b[i]; j >= 0; j--)
+            for (int j = items[i].b; j >= items[i].a; j--)
             {
-                dp1[i][j] = dp1[i - 1][j];
-                if (j >= a[i] && j <= b[i])
-                {
-                    dp1[i][j] = max(dp1[i][j], dp1[i - 1][j - a[i]] + 1);
-                }
-                ans = max(ans, dp1[i][j]);
+                dp1[j] = max(dp1[j], dp1[j - items[i].a] + 1);
+                ans = max(ans, dp1[j]);
             }
         }
         cout << ans << endl;
@@ -41,20 +49,19 @@ int main()
 
         for (int i = 1; i <= n; i++)
         {
-            for (int j = b[i]; j >= 0; j--)
+            for (int j = items[i].b; j >= 0; j--)
             {
-                for (int k = b[i]; k >= 0; k--)
+                for (int k = items[i].b; k >= 0; k--)
                 {
-                    dp2[i][j][k] = dp2[i - 1][j][k];
-                    if (j >= a[i] && j <= b[i])
+                    if (j >= items[i].a)
                     {
-                        dp2[i][j][k] = max(dp2[i][j][k], dp2[i - 1][j - a[i]][k] + 1);
+                        dp2[j][k] = max(dp2[j][k], dp2[j - items[i].a][k] + 1);
                     }
-                    if (k >= a[i] && k <= b[i]) 
+                    if (k >= items[i].a)
                     {
-                        dp2[i][j][k] = max(dp2[i][j][k], dp2[i - 1][j][k - a[i]] + 1);
+                        dp2[j][k] = max(dp2[j][k], dp2[j][k - items[i].a] + 1);
                     }
-                    ans = max(ans, dp2[i][j][k]);
+                    ans = max(ans, dp2[j][k]);
                 }
             }
         }
