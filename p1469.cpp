@@ -38,42 +38,61 @@ inline void write(T1 &ret, T2 &...rest)
     write(rest...);
 }
 
-int n, m,cnt;
+int n, m, cnt;
 int a[1000001];
 int b[1000001];
 
-inline bool check(int x) {
-    int groups = 1;
-    long long sum = 0;
-    for (int i = 1; i <= n; i++) {
-        if (a[i] > x) return false;
-        if (sum + a[i] <= x) {
-            sum += a[i];
-        } else {
-            groups++;
-            sum = a[i];
-        }
+inline bool check(int k)
+{
+    static long long happy[1000002];
+    static long long diff[1000002];
+    // 初始化
+    for (int i = 1; i <= n; ++i) happy[i] = 0, diff[i] = 0;
+
+    for (int i = 1; i <= m; ++i) {
+        int pos = b[i];
+        int l = max(1, pos - k + 1);
+        int r = min(n, pos + k - 1);
+
+        // 差分法处理区间 [l, r]
+        diff[l] += 1;
+        if (pos + 1 <= n) diff[pos + 1] -= 1 + 2 * (pos - l + 1 - 1);
+        if (r + 1 <= n) diff[r + 1] += (r - pos + 1);
     }
-    return groups <= m;
+
+    // 计算二次前缀和
+    for (int i = 1; i <= n; ++i) {
+        diff[i] += diff[i - 1];
+        happy[i] = happy[i - 1] + diff[i];
+    }
+    for(int i = 1; i <= n; ++i) {
+        happy[i] += happy[i - 1];
+        if (happy[i] < a[i]) return false;
+    }
+    return true;
 }
 
 int main()
 {
     read(n, m);
-    for (int i = 1; i <= n; i++){
+    for (int i = 1; i <= n; i++)
+    {
         read(a[i]);
-        cnt += a[i];
+        cnt = max(cnt, a[i]);
     }
-        
 
-    for(int i = 1; i <= m; i++)
+    for (int i = 1; i <= m; i++)
         read(b[i]);
-    int l = 1,r = cnt;
-    while(l < r){
+    int l = 1, r = cnt;
+    while (l < r)
+    {
         int mid = (l + r) >> 1;
-        if(check(mid)) l = mid + 1;
-        else r = mid;
+        if (!check(mid))
+            l = mid + 1;
+        else
+            r = mid;
     }
+    l = l - 1;
     write(l);
     return 0;
 }
