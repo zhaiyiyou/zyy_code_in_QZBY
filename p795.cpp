@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 #include <cstring>
 using namespace std;
 
@@ -11,23 +10,20 @@ struct Dst
     int d, s, t;
 } a[1000002];
 int b[1000002];
+int b1[1000002];
 
-bool checkk(int x)
-{
-    vector<long long> b1(n + 2);
-    for (int i = 0; i <= n + 1; ++i)
+bool checkk(int x) {
+    for(int i = 1; i <= n; i++) {
         b1[i] = b[i];
-    for (int i = 1; i <= x; i++)
-    {
+    }
+    for (int i = 1; i <= x; i++) {
         b1[a[i].s] -= a[i].d;
         b1[a[i].t + 1] += a[i].d;
     }
-    long long now = 0;
-    for (int i = 1; i <= n; i++)
-    {
+    int now = 0;
+    for (int i = 1; i <= n; i++) {
         now += b1[i];
-        if (now < 0)
-            return false;
+        if (now < 0) return false;
     }
     return true;
 }
@@ -38,7 +34,7 @@ int main()
     cin.tie(nullptr);
 
     cin >> n >> m;
-    r[0] = 0;
+    r[0] = 0; 
     for (int i = 1; i <= n; i++)
     {
         cin >> r[i];
@@ -50,8 +46,7 @@ int main()
         cin >> a[i].d >> a[i].s >> a[i].t;
     }
 
-    if (checkk(m))
-    {
+    if(checkk(m)){
         cout << 0 << endl;
         return 0;
     }
@@ -59,8 +54,8 @@ int main()
     int l = 1, r = m;
     while (l < r)
     {
-        int mid = (l + r) / 2;
-        if (checkk(mid))
+        int mid = (l + r) / 2;       
+        if (!checkk(mid))
         {
             r = mid;
         }
@@ -69,7 +64,6 @@ int main()
             l = mid + 1;
         }
     }
-    cout << -1 << endl
-         << l - 1 << endl;
+    cout << -1 << endl << l << endl;
     return 0;
 }
